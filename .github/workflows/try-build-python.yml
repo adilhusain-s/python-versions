@@ -1,0 +1,34 @@
+name: try Build Python package
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  VERSION: ${{ inputs.VERSION || '3.11.0' }}
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  build_python:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: python-3.11.0-linux-ppc64le
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Build Python ${{ env.VERSION }}
+        run: |
+          ./builders/build-python.ps1 -Version $env:VERSION `
+                  -Platform linux -Architecture ppc64le
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ runner.temp }}/artifact
