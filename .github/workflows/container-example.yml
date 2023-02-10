@@ -8,15 +8,13 @@ env:
   ARTIFACT_NAME: python-3.11.0-linux-ppc64le
 defaults:
   run:
-    shell: pwsh
+    shell: ash
 
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
       image: alpine
-      env:
-        NODE_ENV: development
       ports:
         - 80
       volumes:
