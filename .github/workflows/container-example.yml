@@ -14,17 +14,17 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: node:14.16
+      image: alpine
       env:
         NODE_ENV: development
       ports:
         - 80
       volumes:
         - my_docker_volume:/volume_mount
-      options: --cpus 1
+      options: platform linux/ppc64le
     steps:
-      - name: Check for dockerenv file
-        run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+      - name: list files  and os info
+        run: (ls  && grep name -i /etc/os-release )
 
       - name: Check out repository code
         uses: actions/checkout@v3
