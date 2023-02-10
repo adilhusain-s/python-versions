@@ -21,7 +21,7 @@ jobs:
         - 80
       volumes:
         - my_docker_volume:/volume_mount
-      options: platform linux/ppc64le
+      options: --platform linux/ppc64le
     steps:
       - name: list files  and os info
         run: (ls  && grep name -i /etc/os-release )
