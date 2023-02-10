@@ -11,7 +11,7 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: alpine
+      image: debian
       ports:
         - 80
       volumes:
