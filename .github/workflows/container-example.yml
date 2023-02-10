@@ -22,7 +22,7 @@ jobs:
       options: --platform linux/ppc64le
     steps:
       - name: list files  and os info
-        run: (ls  && grep name -i /etc/os-release )
+        run: ls  && grep name -i /etc/os-release
 
       - name: Check out repository code
         uses: actions/checkout@v3
