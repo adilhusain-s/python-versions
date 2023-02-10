@@ -1,0 +1,43 @@
+name: Build Python package in container
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  VERSION: ${{ inputs.VERSION || '3.11.0' }}
+  ARTIFACT_NAME: python-3.11.0-linux-ppc64le
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  container-test-job:
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.16
+      env:
+        NODE_ENV: development
+      ports:
+        - 80
+      volumes:
+        - my_docker_volume:/volume_mount
+      options: --cpus 1
+    steps:
+      - name: Check for dockerenv file
+        run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Build Python ${{ env.VERSION }}
+        run: |
+          ./builders/build-python.ps1 -Version $env:VERSION `
+                  -Platform linux -Architecture ppc64le
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ runner.temp }}/artifact
